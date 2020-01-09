@@ -1,3 +1,3 @@
 An Asteroid Game
 
-Based on the acade classic Asteroids
+Based on the arcade classic Asteroids
