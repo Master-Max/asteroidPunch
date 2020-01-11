@@ -19,6 +19,9 @@ class Player {
     this.alive = true;
 
     this.color = "white";
+
+    this.h = data.h;
+    this.w = data.w;
   }
 
   turnLeft(b){
@@ -34,17 +37,18 @@ class Player {
   }
 
   update(delta){
-    if(this.x > 400){
+    // The Bounding Box
+    if(this.x > this.w){
       this.x = 0;
     }
-    if(this.y > 400){
+    if(this.y > this.h){
       this.y = 0;
     }
     if(this.y < 0){
-      this.y = 400;
+      this.y = this.h;
     }
     if(this.x < 0){
-      this.x = 400;
+      this.x = this.w;
     }
 
 
@@ -55,11 +59,13 @@ class Player {
       this.rad -= this.aVelocity * delta;
     }
 
+    let slowdown = true;
+
     if(this.burning){
       this.vy -= (this.lVelocity * delta) * Math.cos(this.rad);
       this.vx += (this.lVelocity * delta) * Math.sin(this.rad);
     }
-    else{ // Slowdown Feature, eventually the craft stops
+    else if(slowdown){ // Slowdown Feature, eventually the craft stops
       if(this.vx != 0){
         if(this.vx > 0){
           this.vx -= (this.vx * 0.001) * delta;
@@ -82,40 +88,10 @@ class Player {
     this.y += this.vy * delta;
   }
 
-  // draw(ctx, interp){
-  //   //ctx.fillStyle = this.color;
-  //   ctx.strokeStyle = this.color;
-  //   ctx.beginPath();
-  //   //Left Side
-  //   ctx.moveTo(this.x, this.y - 15);
-  //   ctx.lineTo(this.x - 8, this.y + 5);
-  //   ctx.stroke();
-  //
-  //   //Right Side
-  //   ctx.moveTo(this.x, this.y - 15);
-  //   ctx.lineTo(this.x + 8, this.y + 5);
-  //   ctx.stroke();
-  //
-  //   //Bottom0.7
-  //   ctx.moveTo(this.x - 8, this.y + 5);
-  //   ctx.lineTo(this.x + 8, this.y + 5);
-  //   ctx.stroke();
-  //this.x
-  //   //Left Finthis.y
-  //   ctx.moveTo(this.x - 8, this.y + 5);
-  //   ctx.lineTo(this.x -10, this.y + 10);
-  //   ctx.stroke();
-  //
-  //   //Right Fin
-  //   ctx.moveTo(this.x + 8, this.y + 5);
-  //   ctx.lineTo(this.x + 10, this.y + 10);
-  //   ctx.stroke();
-  // }
-
   draw(ctx, interp){
     ctx.strokeStyle = this.color;
 
-    ctx.save();this.y
+    ctx.save();
     ctx.translate(this.x, this.y);
     ctx.rotate(this.rad);
 
@@ -157,9 +133,36 @@ class Player {
     }
 
     ctx.restore();
-
-    // ctx.fillStyle = "white";
-    // ctx.font = '32px serif';
-    // ctx.fillText(this.rad, 10, 50);
   }
 }
+
+
+  // draw(ctx, interp){
+  //   //ctx.fillStyle = this.color;
+  //   ctx.strokeStyle = this.color;
+  //   ctx.beginPath();
+  //   //Left Side
+  //   ctx.moveTo(this.x, this.y - 15);
+  //   ctx.lineTo(this.x - 8, this.y + 5);
+  //   ctx.stroke();
+  //
+  //   //Right Side
+  //   ctx.moveTo(this.x, this.y - 15);
+  //   ctx.lineTo(this.x + 8, this.y + 5);
+  //   ctx.stroke();
+  //
+  //   //Bottom0.7
+  //   ctx.moveTo(this.x - 8, this.y + 5);
+  //   ctx.lineTo(this.x + 8, this.y + 5);
+  //   ctx.stroke();
+  //this.x
+  //   //Left Finthis.y
+  //   ctx.moveTo(this.x - 8, this.y + 5);
+  //   ctx.lineTo(this.x -10, this.y + 10);
+  //   ctx.stroke();
+  //
+  //   //Right Fin
+  //   ctx.moveTo(this.x + 8, this.y + 5);
+  //   ctx.lineTo(this.x + 10, this.y + 10);
+  //   ctx.stroke();
+  // }

@@ -36,7 +36,7 @@ let rafHandle;
 function update(delta) {
   // creep.lastX = creep.x;
   // creep.x += creep.velocity * delta;
-  // if(creep.x >= creep.limit || creep.x <= 0){
+  // if(creep.x >= creep.limit || creep.x <player= 0){
   //   creep.velocity = -creep.velocity;
   // }
   renderQueue.forEach((obj) => {
@@ -63,7 +63,7 @@ function draw(interp) {
 
   renderQueue.forEach((obj) => {
     if (typeof obj.drawSprite === "function"){
-      obj.drawSprite(ctx, interp); // FIX THIS
+      obj.drawSprite(ctx, interp); // FIX playerTHIS
     } else {
       obj.draw(ctx, interp);
     }
