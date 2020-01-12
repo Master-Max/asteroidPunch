@@ -30,8 +30,10 @@ class Player {
     this.shotAway = false;
     this.lockGun = false;
 
-    this.power = 0.3;
+    this.power = 0.7;
     this.ammo = 5;
+
+    this.alphas = [0.01, 0.05, 0.1, 0.15, 0.2, 0.35, 0.5, 0.8, 1];
   }
 
   turnLeft(b){
@@ -136,22 +138,41 @@ class Player {
     if(this.burning){
       this.vy -= (this.lVelocity * delta) * Math.cos(this.rad);
       this.vx += (this.lVelocity * delta) * Math.sin(this.rad);
+
+      //console.log('Vx: ' + this.vx);
+      //console.log('Vy: ' + this.vy);
+
+      if(this.vx > 1){
+        this.vx = 1;
+      }
+      if(this.vy < -1){
+        this.vy = -1;
+      }
+      if(this.vx < -1){
+        this.vx = -1;
+      }
+      if(this.vy > 1){
+        this.vy = 1;
+      }
+
     }
     else if(slowdown){ // Slowdown Feature, eventually the craft stops
+      let slowV = 0.0005;
+
       if(this.vx != 0){
         if(this.vx > 0){
-          this.vx -= (this.vx * 0.001) * delta;
+          this.vx -= (this.vx * slowV) * delta;
         }
         else if(this.vx < 0){
-          this.vx -= (this.vx * 0.001) * delta;
+          this.vx -= (this.vx * slowV) * delta;
         }
       }
       if(this.vy != 0){
         if(this.vy > 0){
-          this.vy -= (this.vy * 0.001) * delta;
+          this.vy -= (this.vy * slowV) * delta;
         }
         else if(this.vy < 0){
-          this.vy -= (this.vy * 0.001) * delta;
+          this.vy -= (this.vy * slowV) * delta;
         }
       }
     }
@@ -198,6 +219,9 @@ class Player {
 
     //Exhaust
     if(this.burning){
+      let n = Math.floor(Math.random() * 8);
+      //console.log(n);
+      ctx.globalAlpha = this.alphas[n];
       ctx.moveTo(-4, 5);
       ctx.lineTo(0, 15);
       ctx.stroke();

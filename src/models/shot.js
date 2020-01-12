@@ -42,7 +42,7 @@ class Shot {
     this.distance += delta;
     //console.log(this.distance);
 
-    if(this.distance > 3000){
+    if(this.distance > 950){
       this.hit = true;
     }
 

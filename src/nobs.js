@@ -88,7 +88,7 @@ function makeTmpAsteroid(data) {
 function makeTmpPlayer() {
   let h = height;
   let w = width;
-  const data = {name: "", health:3, score:0, x:width/2, y:height/2, lv:0.001, r:0.0, av:0.01, h:h, w:w};
+  const data = {name: "", health:3, score:0, x:width/2, y:height/2, lv:0.0002, r:0.0, av:0.005, h:h, w:w};
   player = new Player(data);
   renderQueue.push(player);
 }
@@ -98,7 +98,7 @@ function makeTmpPlayer() {
 document.addEventListener('keydown', downKey);
 
 function downKey(e) {
-  console.log('DW' + e.code);
+  //console.log('DW' + e.code);
   switch(e.code){
     case 'KeyA':
       player.turnLeft(true);
@@ -109,7 +109,8 @@ function downKey(e) {
     case 'KeyW':
       player.burnEngine(true);
       break;
-    case'KeyJ':
+    case 'KeyJ':
+    case 'Space':
       player.litFuse();
       break;
     default:
@@ -119,7 +120,7 @@ function downKey(e) {
 document.addEventListener('keyup', upKey);
 
 function upKey(e) {
-  console.log('UP' + e.code);
+  //console.log('UP' + e.code);
   switch(e.code){
     case 'KeyA':
       player.turnLeft(false);
@@ -130,7 +131,8 @@ function upKey(e) {
     case 'KeyW':
       player.burnEngine(false);
       break;
-    case'KeyJ':
+    case 'KeyJ':
+    case 'Space':
       player.reload();
       break;
     default:
