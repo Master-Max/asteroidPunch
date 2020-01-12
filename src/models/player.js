@@ -22,6 +22,16 @@ class Player {
 
     this.h = data.h;
     this.w = data.w;
+
+    this.radius = 15;
+    this.hit = false;
+
+    this.fuseLit = false;
+    this.shotAway = false;
+    this.lockGun = false;
+
+    this.power = 0.3;
+    this.ammo = 5;
   }
 
   turnLeft(b){
@@ -36,8 +46,70 @@ class Player {
     this.burning = b;
   }
 
+  litFuse(b){
+    this.fuseLit = true;
+  }
+
+  reload(){
+    console.log('reload');
+    this.fuseLit = false;
+    this.shotAway = false;
+  }
+
+  addAmmo(){
+    this.ammo++;
+  }
+
+  checkHit(){
+    for(let i = 0; i < asteroidQueue.length; i++){
+      let D2 = (this.x - asteroidQueue[i].x) ** 2 + (this.y - asteroidQueue[i].y) ** 2;
+      if(D2 < (this.radius + asteroidQueue[i].radius) ** 2){
+        this.hit = true;
+        //this.color = "red";
+        asteroidQueue[i].hitFace(); // = true;
+      } else {
+        //this.color = "white";
+      }
+    }
+  }
+
+  fireShot(){
+    let cos = Math.cos(this.rad);
+    let sin = Math.sin(this.rad);
+
+    let x = this.x + (15 * sin);
+    let y = this.y - (15 * cos);
+
+    let vy = -this.power * cos;
+    let vx = this.power * sin;
+    const data = {name:"shot", x:x, y:y, vx:vx, vy:vy, h:this.h, w:this.w};
+    if(!this.lockGun){
+      makeTmpShot(data);
+    }
+  }
+
   update(delta){
     // The Bounding Box
+    this.checkHit();
+
+    if(this.hit){
+      this.health--;
+      if(this.health <= 0){
+        this.color = "red";
+        this.lockGun = true;
+      }
+      this.hit = false;
+    }
+
+    if(this.fuseLit && !this.shotAway){
+      if(this.ammo > 0){
+        this.ammo --;
+        this.fuseLit = false;
+        this.shotAway = true;
+        this.fireShot();
+      }
+    }
+
     if(this.x > this.w){
       this.x = 0;
     }
@@ -90,6 +162,9 @@ class Player {
 
   draw(ctx, interp){
     ctx.strokeStyle = this.color;
+    ctx.fillStyle = this.color;
+    ctx.font = "20px Arial";
+    ctx.fillText(this.health, 50, 50);
 
     ctx.save();
     ctx.translate(this.x, this.y);
@@ -135,34 +210,3 @@ class Player {
     ctx.restore();
   }
 }
-
-
-  // draw(ctx, interp){
-  //   //ctx.fillStyle = this.color;
-  //   ctx.strokeStyle = this.color;
-  //   ctx.beginPath();
-  //   //Left Side
-  //   ctx.moveTo(this.x, this.y - 15);
-  //   ctx.lineTo(this.x - 8, this.y + 5);
-  //   ctx.stroke();
-  //
-  //   //Right Side
-  //   ctx.moveTo(this.x, this.y - 15);
-  //   ctx.lineTo(this.x + 8, this.y + 5);
-  //   ctx.stroke();
-  //
-  //   //Bottom0.7
-  //   ctx.moveTo(this.x - 8, this.y + 5);
-  //   ctx.lineTo(this.x + 8, this.y + 5);
-  //   ctx.stroke();
-  //this.x
-  //   //Left Finthis.y
-  //   ctx.moveTo(this.x - 8, this.y + 5);
-  //   ctx.lineTo(this.x -10, this.y + 10);
-  //   ctx.stroke();
-  //
-  //   //Right Fin
-  //   ctx.moveTo(this.x + 8, this.y + 5);
-  //   ctx.lineTo(this.x + 10, this.y + 10);
-  //   ctx.stroke();
-  // }

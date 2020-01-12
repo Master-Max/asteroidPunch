@@ -7,8 +7,19 @@ function removeFromRenderQueue(obj){
   renderQueue.splice(index, 1);
 }
 
-const tmpQueue = [];
+const asteroidQueue = [];
+function removeFromAsteroidQueue(obj){
+  console.log("Attempting removal of asteroid");
+  const index = asteroidQueue.indexOf(obj);
+  asteroidQueue.splice(index, 1);
+}
 
+const shotQueue = [];
+function removeFromShotQueue(obj){
+  console.log("Attempting removal of shot");
+  const index = shotQueue.indexOf(obj);
+  shotQueue.splice(index, 1);
+}
 /****************************************
 *Dev Buttons
 *****************************************/
