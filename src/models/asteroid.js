@@ -22,8 +22,8 @@ class Asteroid {
     this.hit = true;
     this.color = "red";
     if(this.health - 1 > 0){
-      makeTmpAsteroid({health:this.health - 1, child:true, x:this.x, y:this.y});
-      makeTmpAsteroid({health:this.health - 1, child:true, x:this.x, y:this.y});
+      makeTmpAsteroid({health:this.health / 2, child:true, x:this.x, y:this.y});
+      makeTmpAsteroid({health:this.health / 2, child:true, x:this.x, y:this.y});
     }
   }
 

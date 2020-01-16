@@ -1,9 +1,9 @@
 startButton.addEventListener('click', () => {
   makeTmpPlayer();
-  makeTmpAsteroid({health:3, child:false});
-  makeTmpAsteroid({health:3, child:false});
-  makeTmpAsteroid({health:3, child:false});
-  makeTmpAsteroid({health:3, child:false});
+  makeTmpAsteroid({health:4, child:false});
+  makeTmpAsteroid({health:4, child:false});
+  makeTmpAsteroid({health:4, child:false});
+  makeTmpAsteroid({health:4, child:false});
   start();
   // console.log("Have I Won: 1");
 })
@@ -78,6 +78,14 @@ function makeTmpAsteroid(data) {
     foo = {health:data.health, x:data.x, y:data.y, vx:stats.vx, vy:stats.vy, h:height, w:width}
   }
   asteroid = new Asteroid(foo);
+  if(asteroid.health >= 4){
+    if(asteroid.x > player.x - 50 && asteroid.x < player.x + 50){
+      if(asteroid.y > player.y - 50 && asteroid.y < player.y + 50){
+        console.log("Badsteroid: (" + asteroid.x + ", " + asteroid.y + ")");
+        makeTmpAsteroid({health:4, child:false});
+      }
+    }
+  }
   renderQueue.push(asteroid);
   asteroidQueue.push(asteroid);
 }
