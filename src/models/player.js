@@ -109,19 +109,19 @@ class Player {
     let ACDist = Math.sqrt( (c[0] - a[0]) ** 2 + (c[1] - a[1]) ** 2 );
     let BCDist = Math.sqrt( (c[0] - b[0]) ** 2 + (c[1] - b[1]) ** 2 );
 
-    console.log(`>>\nAB: ${ABDist} | AC: ${ACDist} | BC: ${BCDist} | ACB: ${ACDist + BCDist}`)
+    //console.log(`>>\nAB: ${ABDist} | AC: ${ACDist} | BC: ${BCDist} | ACB: ${ACDist + BCDist}`)
 
     let CDist = ACDist + BCDist;
     //console.log("A--B: " + ABDist + "\nACBC: " + CDist);
     if(ABDist == CDist){
-      console.log("HIT")
+      //console.log("HIT")
       return true;
     }else if(Math.abs(ABDist - CDist) < 1){
-      console.log("NEAR HIT: " + Math.abs(ABDist - CDist));
+      //console.log("NEAR HIT: " + Math.abs(ABDist - CDist));
       return true;
     }else{
       //console.log(`AB: ${ABDist}  |  ACB: ${CDist}`)
-      console.log("MISS: " + Math.abs(ABDist - CDist));
+      //console.log("MISS: " + Math.abs(ABDist - CDist));
       return false;
     }
   }
@@ -159,15 +159,22 @@ class Player {
         } else {
           let x = Math.round((B2*C1 - B1*C2)/det);
           let y = Math.round((A1*C2 - A2*C1)/det);
-          tmpPoints.push([x,y]);
 
-          let aX = Math.round(p[0][0]);
-          let aY = Math.round(p[1][0]);
+          tmpPoints.push([x,y]); // Debugging Tool
 
-          let bX = Math.round(p[0][j+1]);
-          let bY = Math.round(p[1][j+1]);
+          let a1X = Math.round(p[0][0]);
+          let a1Y = Math.round(p[1][0]);
 
-          if(this.isPointOnLine( [aX,aY], [bX,bY], [x,y] )){
+          let b1X = Math.round(p[0][j+1]);
+          let b1Y = Math.round(p[1][j+1]);
+
+          let a2X = Math.round(a[0][i]);
+          let a2Y = Math.round(a[1][i]);
+
+          let b2X = Math.round(a[0][i+1]);
+          let b2Y = Math.round(a[1][i+1]);
+
+          if(this.isPointOnLine( [a1X,a1Y], [b1X,b1Y], [x,y] ) && this.isPointOnLine( [a2X,a2Y], [b2X,b2Y], [x,y] )){
             console.log("COLLISION DETECTED @ (" + x + ", " + y + ")");
           }
 
@@ -176,13 +183,12 @@ class Player {
 
       // Debugging Code Cont.
 
-      console.log(`For side ${i}: A(${a[0][i]}, ${a[1][i]}) --- B(${a[0][i+1]}, ${a[1][i+1]})`);
-      console.log("Tested Points: ")
-      for(let t = 0; t < p[0].length; t++){
-        console.log(`(${p[0][t]}, ${p[1][t]})`)
-      }
-      // console.log(`Tested Points: ${p[0]}`);
-      console.log(`Intersects at points: ${tmpPoints}\n>>>>>`);
+      // console.log(`For side ${i}: A(${a[0][i]}, ${a[1][i]}) --- B(${a[0][i+1]}, ${a[1][i+1]})`);
+      // console.log("Tested Points: ")
+      // for(let t = 0; t < p[0].length; t++){
+      //   console.log(`(${p[0][t]}, ${p[1][t]})`)
+      // }
+      // console.log(`Intersects at points: ${tmpPoints}\n>>>>>`);
 
 
 
