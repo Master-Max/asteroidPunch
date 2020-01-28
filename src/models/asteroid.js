@@ -49,8 +49,8 @@ class Asteroid {
     let currentVertsX = [];
     let currentVertsY = [];
     for(let i = 0; i < this.verts[0].length; i++){
-      currentVertsX.push(this.verts[0][i] + this.x);
-      currentVertsY.push(-1 * this.verts[1][i] + this.y);
+      currentVertsX.push((this.verts[0][i] * this.health) + this.x);
+      currentVertsY.push(-1 * (this.verts[1][i]  * this.health) + this.y);
     }
     let currentVerts = [currentVertsX, currentVertsY];
     return(currentVerts);
