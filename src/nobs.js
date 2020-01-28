@@ -58,7 +58,9 @@ function genAsteroidStats() {
 
   const stats = {coords:coords, vx:vx, vy:vy}
 
-  return stats;
+  const testStats = {coords:coords, vx:0, vy:0}
+
+  return testStats;
 }
 
 function makeTmpAsteroid(data) {
@@ -70,12 +72,18 @@ function makeTmpAsteroid(data) {
   let h = height;
   let w = width;
   stats = genAsteroidStats();
+
+  // TEST SHAPE
+  let vertsX = [-10,0,10,10,0,-10,-10];
+  let vertsY = [10,5,10,-10,-5,-10,10];
+  let verts = [vertsX,vertsY];
+
   //console.log(stats);
   //const data = {vx:stats.vx, vy:stats.vy, health:3, flavor:stats.flavor, x:stats.coords[0], y:stats.coords[1], lv:0.1, rad:stats.coords[2], h:height, w:width};
   //const data = {health:3, flavor:'Cobbled', x:100, y:100, lv:0.1, rad:0, h:height, w:width};
-  let foo = {health:data.health, x:stats.coords[0], y:stats.coords[1], vx:stats.vx, vy:stats.vy, h:height, w:width};
+  let foo = {health:data.health, x:stats.coords[0], y:stats.coords[1], vx:stats.vx, vy:stats.vy, h:height, w:width, verts:verts};
   if(data.child){
-    foo = {health:data.health, x:data.x, y:data.y, vx:stats.vx, vy:stats.vy, h:height, w:width}
+    foo = {health:data.health, x:data.x, y:data.y, vx:stats.vx, vy:stats.vy, h:height, w:width, verts:verts};
   }
   asteroid = new Asteroid(foo);
   if(asteroid.health >= 4){
@@ -96,7 +104,10 @@ function makeTmpAsteroid(data) {
 function makeTmpPlayer() {
   let h = height;
   let w = width;
-  const data = {name: "", health:3, score:0, x:width/2, y:height/2, lv:0.0002, r:0.0, av:0.005, h:h, w:w};
+  let pVertsX = [0,-4,4,10,-10];
+  let pVertsY = [-15,-5,-5,10,10];
+  let pVerts = [pVertsX, pVertsY];
+  const data = {name: "", health:3, score:0, x:width/2, y:height/2, lv:0.0002, r:0.0, av:0.005, h:h, w:w, verts:pVerts};
   player = new Player(data);
   renderQueue.push(player);
 }

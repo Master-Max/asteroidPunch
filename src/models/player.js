@@ -11,6 +11,9 @@ class Player {
     this.vy = 0.0;
     this.rad = data.r; // Rotation
     this.aVelocity = data.av;
+
+    this.verts = data.verts;
+
     this.turnL = false;
     this.turnR = false;
 
@@ -75,6 +78,103 @@ class Player {
     }
   }
 
+  getCurrentVerts(){
+    let currVertsX = [];
+    let currVertsY = [];
+
+    let cosAngle = Math.cos(this.rad);
+    let sinAngle = Math.sin(this.rad);
+
+    for(let i = 0; i < this.verts[0].length; i++){
+
+      let worldUnrotatedX = this.verts[0][i] + this.x;
+      let worldUnrotatedY = this.verts[1][i] + this.y;
+
+      let currentPointX = this.x + ((worldUnrotatedX - this.x) * cosAngle - (worldUnrotatedY - this.y) * sinAngle);
+      let currentPointY = this.y + ((worldUnrotatedX - this.x) * sinAngle + (worldUnrotatedY - this.y) * cosAngle);
+
+      currVertsX.push(currentPointX);
+      currVertsY.push(currentPointY);
+
+      // currVertsX.push(worldUnrotatedX);
+      // currVertsY.push(worldUnrotatedY);
+    }
+
+    let currVerts = [currVertsX,currVertsY];
+    return(currVerts);
+  }
+
+  isPointOnLine(a,b,c){
+    let ABDist = Math.sqrt( (b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2 );
+    let ACDist = Math.sqrt( (c[0] - a[0]) ** 2 + (c[1] - a[1]) ** 2 );
+    let BCDist = Math.sqrt( (c[0] - b[0]) ** 2 + (c[1] - b[1]) ** 2 );
+    let CDist = ACDist + ABDist;
+    console.log("A--B: " + ABDist + "\nACBC: " + CDist);
+    if(ABDist == CDist){
+      console.log("HIT")
+      return true;
+    }else
+    if(Math.abs(ABDist - CDist) < 0.1){
+      console.log("NEAR HIT: " + (ABDist - CDist));
+      return true;
+    }else{
+      console.log("MISS: " + (ABDist - CDist));
+      return false;
+    }
+  }
+
+  checkLinesIntersect(p,a){
+    //let parallel = false;
+    //let x = 0;
+    //let y = 0;
+
+    for(let i = 0; i < a[0].length - 1; i++){
+      for(let j = 0; j < p[0].length; j++){
+        let A1 = p[1][j] - this.y;
+        let B1 = this.x - p[0][j];
+        let C1 = (A1 * this.x) + (B1 * this.y);
+
+        let A2 = a[1][i+1] - a[1][i];
+        let B2 = a[0][i] - a[0][i+1];
+        let C2 = (A2 * a[0][i]) + (B2 * a[1][i]);
+
+        let det = A1*B2 - A2*B1;
+        if(det == 0){
+          //Lines are parallel
+          //parallel = true;
+        } else {
+          let x = (B2*C1 - B1*C2)/det;
+          let y = (A1*C2 - A2*C1)/det;
+
+          if(this.isPointOnLine( [[this.x],[this.y]], [[p[0][i]],[p[1][i]]], [x,y] )){
+            console.log("COLLISION DETECTED @ (" + x + ", " + y + ")");
+          }
+
+        }
+      }
+    }
+
+
+  }
+
+  newCheckHit(){
+    for(let i = 0; i < asteroidQueue.length; i++){
+      let D2 = (this.x - asteroidQueue[i].x) ** 2 + (this.y - asteroidQueue[i].y) ** 2;
+      if(D2 < (this.radius + asteroidQueue[i].radius) ** 2){
+        //this.hit = true;
+        //this.color = "red";
+        asteroidQueue[i].hitFace(true); // = true;
+
+        let aVerts = asteroidQueue[i].getCurrentVerts();
+        let pVerts = this.getCurrentVerts();
+        this.checkLinesIntersect(pVerts, aVerts);
+      } else {
+        asteroidQueue[i].hitFace(false);
+        //this.color = "white";
+      }
+    }
+  }
+
   fireShot(){
     let cos = Math.cos(this.rad);
     let sin = Math.sin(this.rad);
@@ -92,7 +192,9 @@ class Player {
 
   update(delta){
     // The Bounding Box
-    this.checkHit();
+    this.newCheckHit();
+
+    //console.log(this.getCurrentVerts());
 
     if(this.hit){
       this.health--;
@@ -231,6 +333,21 @@ class Player {
       ctx.stroke();
     }
 
+    ctx.closePath();
+
     ctx.restore();
+
+    // Test Thing
+    ctx.strokeStyle = 'blue';
+    let tmp = this.getCurrentVerts();
+    for(let i = 0; i < tmp[0].length; i++){
+      ctx.beginPath();
+      ctx.moveTo(tmp[0][i], tmp[1][i]);
+      ctx.lineTo(this.x, this.y);
+      ctx.stroke();
+      ctx.closePath();
+    }
+
+
   }
 }
