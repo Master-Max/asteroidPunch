@@ -108,16 +108,20 @@ class Player {
     let ABDist = Math.sqrt( (b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2 );
     let ACDist = Math.sqrt( (c[0] - a[0]) ** 2 + (c[1] - a[1]) ** 2 );
     let BCDist = Math.sqrt( (c[0] - b[0]) ** 2 + (c[1] - b[1]) ** 2 );
-    let CDist = ACDist + ABDist;
+
+    console.log(`>>\nAB: ${ABDist} | AC: ${ACDist} | BC: ${BCDist} | ACB: ${ACDist + BCDist}`)
+
+    let CDist = ACDist + BCDist;
     //console.log("A--B: " + ABDist + "\nACBC: " + CDist);
     if(ABDist == CDist){
       console.log("HIT")
       return true;
-    }else if(Math.abs(ABDist - CDist) < 5){
-      console.log("NEAR HIT: " + (ABDist - CDist));
+    }else if(Math.abs(ABDist - CDist) < 1){
+      console.log("NEAR HIT: " + Math.abs(ABDist - CDist));
       return true;
     }else{
-      //console.log("MISS: " + (ABDist - CDist));
+      //console.log(`AB: ${ABDist}  |  ACB: ${CDist}`)
+      console.log("MISS: " + Math.abs(ABDist - CDist));
       return false;
     }
   }
@@ -139,10 +143,10 @@ class Player {
 
 
 
-      for(let j = 0; j < p[0].length; j++){
-        let A1 = p[1][j] - this.y;
-        let B1 = this.x - p[0][j];
-        let C1 = (A1 * this.x) + (B1 * this.y);
+      for(let j = 0; j < p[0].length-1; j++){
+        let A1 = p[1][j+1] - p[1][0];
+        let B1 = p[0][0] - p[0][j+1];
+        let C1 = (A1 * p[0][0]) + (B1 * p[1][0]);
 
         let A2 = a[1][i+1] - a[1][i];
         let B2 = a[0][i] - a[0][i+1];
@@ -153,11 +157,17 @@ class Player {
           //Lines are parallel
           //parallel = true;
         } else {
-          let x = (B2*C1 - B1*C2)/det;
-          let y = (A1*C2 - A2*C1)/det;
+          let x = Math.round((B2*C1 - B1*C2)/det);
+          let y = Math.round((A1*C2 - A2*C1)/det);
           tmpPoints.push([x,y]);
 
-          if(this.isPointOnLine( [[this.x],[this.y]], [[p[0][i]],[p[1][i]]], [x,y] )){
+          let aX = Math.round(p[0][0]);
+          let aY = Math.round(p[1][0]);
+
+          let bX = Math.round(p[0][j+1]);
+          let bY = Math.round(p[1][j+1]);
+
+          if(this.isPointOnLine( [aX,aY], [bX,bY], [x,y] )){
             console.log("COLLISION DETECTED @ (" + x + ", " + y + ")");
           }
 
@@ -166,9 +176,13 @@ class Player {
 
       // Debugging Code Cont.
 
-      // console.log(`For side ${i}: A(${a[0][i]}, ${a[1][i]}) --- B(${a[0][i+1]}, ${a[1][i+1]})`);
-      // console.log(`Tested Points: ${p}`);
-      // console.log(`Intersects at points: ${tmpPoints}`);
+      console.log(`For side ${i}: A(${a[0][i]}, ${a[1][i]}) --- B(${a[0][i+1]}, ${a[1][i+1]})`);
+      console.log("Tested Points: ")
+      for(let t = 0; t < p[0].length; t++){
+        console.log(`(${p[0][t]}, ${p[1][t]})`)
+      }
+      // console.log(`Tested Points: ${p[0]}`);
+      console.log(`Intersects at points: ${tmpPoints}\n>>>>>`);
 
 
 

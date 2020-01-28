@@ -104,8 +104,8 @@ function makeTmpAsteroid(data) {
 function makeTmpPlayer() {
   let h = height;
   let w = width;
-  let pVertsX = [0,-4,4,10,-10];
-  let pVertsY = [-15,-5,-5,10,10];
+  let pVertsX = [0,10,-10];
+  let pVertsY = [-15,10,10];
   let pVerts = [pVertsX, pVertsY];
   const data = {name: "", health:3, score:0, x:width/2, y:height/2, lv:0.0002, r:0.0, av:0.005, h:h, w:w, verts:pVerts};
   player = new Player(data);
