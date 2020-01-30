@@ -24,7 +24,7 @@ class Shot {
       if(D2 < (this.radius + asteroidQueue[i].radius) ** 2){
         this.hit = true;
         this.color = "red";
-        asteroidQueue[i].hitFace(); // = true;
+        asteroidQueue[i].hitFace(true); // = true;
       } else {
         this.color = "white";
       }
@@ -75,8 +75,11 @@ class Shot {
 
   draw(ctx, interp){
     ctx.strokeStyle = this.color;
+    ctx.lineWidth = 2.0;
     ctx.beginPath();
-    ctx.arc(this.x,this.y, 1, 0, 2 * Math.PI);
+    ctx.moveTo(this.x, this.y);
+    ctx.lineTo(this.x -= this.vx * 5, this.y - this.vy * 5);
+    // ctx.arc(this.x,this.y, 1, 0, 2 * Math.PI);
     ctx.stroke();
   }
 }

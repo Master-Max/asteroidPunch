@@ -130,18 +130,13 @@ class Player {
     //let parallel = false;
     //let x = 0;
     //let y = 0;
+    let didCollide = false;
 
     for(let i = 0; i < a[0].length - 1; i++){
 
       // Debugging Code
       let tmpPoints = [];
-
-
-
-
       /////
-
-
 
       for(let j = 0; j < p[0].length-1; j++){
         let A1 = p[1][j+1] - p[1][0];
@@ -176,9 +171,16 @@ class Player {
 
           if(this.isPointOnLine( [a1X,a1Y], [b1X,b1Y], [x,y] ) && this.isPointOnLine( [a2X,a2Y], [b2X,b2Y], [x,y] )){
             console.log("COLLISION DETECTED @ (" + x + ", " + y + ")");
+            didCollide = true;
+
+            // this.color = 'red';
+          }else{
+            // this.color = 'white';
           }
 
         }
+
+        return didCollide;
       }
 
       // Debugging Code Cont.
@@ -189,8 +191,6 @@ class Player {
       //   console.log(`(${p[0][t]}, ${p[1][t]})`)
       // }
       // console.log(`Intersects at points: ${tmpPoints}\n>>>>>`);
-
-
 
       /////
 
@@ -205,14 +205,17 @@ class Player {
       if(D2 < (this.radius + asteroidQueue[i].radius) ** 2){
         //this.hit = true;
         //this.color = "red";
-        asteroidQueue[i].hitFace(true); // = true;
+         // = true;
 
         let aVerts = asteroidQueue[i].getCurrentVerts();
         let pVerts = this.getCurrentVerts();
-        this.checkLinesIntersect(pVerts, aVerts);
+      if(this.checkLinesIntersect(pVerts, aVerts)){
+        asteroidQueue[i].hitFace(true);
+        this.hit = true;
+      }
       } else {
         asteroidQueue[i].hitFace(false);
-        //this.color = "white";
+        // this.color = "white";
       }
     }
   }
@@ -240,6 +243,7 @@ class Player {
 
     if(this.hit){
       this.health--;
+      console.log(`Hit: ${this.health}`)
       if(this.health <= 0){
         this.color = "red";
         this.lockGun = true;
@@ -380,15 +384,15 @@ class Player {
     ctx.restore();
 
     // Test Thing
-    ctx.strokeStyle = 'blue';
-    let tmp = this.getCurrentVerts();
-    for(let i = 0; i < tmp[0].length; i++){
-      ctx.beginPath();
-      ctx.moveTo(tmp[0][i], tmp[1][i]);
-      ctx.lineTo(this.x, this.y);
-      ctx.stroke();
-      ctx.closePath();
-    }
+    // ctx.strokeStyle = 'blue';
+    // let tmp = this.getCurrentVerts();
+    // for(let i = 0; i < tmp[0].length; i++){
+    //   ctx.beginPath();
+    //   ctx.moveTo(tmp[0][i], tmp[1][i]);
+    //   ctx.lineTo(this.x, this.y);
+    //   ctx.stroke();
+    //   ctx.closePath();
+    // }
 
 
   }

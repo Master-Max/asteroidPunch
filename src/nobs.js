@@ -60,7 +60,7 @@ function genAsteroidStats() {
 
   const testStats = {coords:coords, vx:0, vy:0}
 
-  return testStats;
+  return stats;
 }
 
 function makeTmpAsteroid(data) {

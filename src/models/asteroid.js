@@ -20,18 +20,20 @@ class Asteroid {
   }
 
   hitFace(foo){
-    //console.log("HIT FACE")
-    //this.hit = true;
+    // console.log("HIT FACE")
+    // this.hit = foo;
     if(foo){
       this.color = "red";
+      this.hit = true;
+      if(this.health - 1 > 0){
+        makeTmpAsteroid({health:this.health / 2, child:true, x:this.x, y:this.y});
+        makeTmpAsteroid({health:this.health / 2, child:true, x:this.x, y:this.y});
+      }
     }else{
       this.color = "white";
     }
 
-    // if(this.health - 1 > 0){
-    //   makeTmpAsteroid({health:this.health / 2, child:true, x:this.x, y:this.y});
-    //   makeTmpAsteroid({health:this.health / 2, child:true, x:this.x, y:this.y});
-    // }
+
   }
 
   // OLD HIT FACE
